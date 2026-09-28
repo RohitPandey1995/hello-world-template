@@ -2,6 +2,9 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: ${{ values.name }}
+  annotations:
+    github.com/project-slug: RohitPandey1995/${{ values.name }}
+    backstage.io/kubernetes-id: ${{ values.name }}
 spec:
   type: service
   lifecycle: experimental
