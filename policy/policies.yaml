@@ -1,0 +1,31 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-approved-registry
+spec:
+  validationActions: [Deny]
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ['']
+        apiVersions: ['v1']
+        operations: ['CREATE', 'UPDATE']
+        resources: ['pods']
+  validations:
+    - expression: "object.spec.containers.all(c, c.image.startsWith('registry.k8s.io/') || c.image.startsWith('ghcr.io/rohitpandey1995/'))"
+      message: "Images must come from registry.k8s.io or ghcr.io/rohitpandey1995/"
+---
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-backstage-label
+spec:
+  validationActions: [Deny]
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ['']
+        apiVersions: ['v1']
+        operations: ['CREATE', 'UPDATE']
+        resources: ['pods']
+  validations:
+    - expression: "has(object.metadata.labels) && 'backstage.io/kubernetes-id' in object.metadata.labels"
+      message: "Pods must carry the backstage.io/kubernetes-id label so they appear in Backstage"
