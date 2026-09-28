@@ -6,3 +6,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: docker build -t ${{ values.name }} .
+  policy-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: kyverno/action-install-cli@v0.2.0
+        with:
+          release: 'v1.19.1'
+      - run: kyverno apply policy/policies.yaml --resource k8s/deployment.yaml
