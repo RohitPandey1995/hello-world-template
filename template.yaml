@@ -27,7 +27,6 @@ spec:
       name: Publish to GitHub
       action: publish:github
       input:
-        allowedHosts: ['github.com']
         description: 'Hello World service'
         repoUrl: 'github.com?owner=RohitPandey1995&repo={{ parameters.name }}'
     - id: register
